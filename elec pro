@@ -25,6 +25,7 @@ int leftSensor = 1;
 int blockSensor = 1;
 int rightSensor = 1;
 bool isStart = false;
+bool isEnd = false;
 
 // the setup function runs once when you press reset or power the board
 void setup ()
@@ -62,39 +63,41 @@ void loop()
     
     delay(1000);
     
-    if ( leftSensor && rightSensor ) {
+    if ( leftSensor && rightSensor && !isEnd ) {
       digitalWrite(pinLdir, HIGH);
       digitalWrite(pinRdir, HIGH);
     }
 
-    if ( !leftSensor && rightSensor ) {
+    if ( !leftSensor && rightSensor && !isEnd ) {
       digitalWrite(pinLdir, LOW);
       digitalWrite(pinRdir, HIGH);
    }
 
-    if ( leftSensor && !rightSensor ) {
+    if ( leftSensor && !rightSensor && !isEnd ) {
     digitalWrite(pinLdir, HIGH);
       digitalWrite(pinRdir, LOW);
     }
 
-    if ( !leftSensor && !rightSensor ) {
+    if ( !leftSensor && !rightSensor && !isEnd ) {
       digitalWrite(pinLdir, LOW);
       digitalWrite(pinRdir, HIGH);
     }
-    
+
+    if (isEnd) {
+        if ( leftSensor && !rightSensor ) {
+        analogWrite(pinPWM_L, 0);
+        analogWrite(pinPWM_R, 0);
+        delay(99999999);
+      }
+    }
   }
-  else ( blockSensor == 0 ) {
+  else if ( blockSensor == 0 ) {
     isStart = true;
     
     if ( leftSensor && rightSensor && !blockSensor ){
+      isEnd = true;
       digitalWrite(pinLdir, LOW);
       digitalWrite(pinRdir, LOW);
-      if ( leftSensor && !rightSensor ) {
-        analogWrite(pinPWM_L, 0);
-        analogWrite(pinPWM_R, 0);
-        delay(9999999999999999999);
-      }
     }
-    
   }
 }
