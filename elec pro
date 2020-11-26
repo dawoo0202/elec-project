@@ -61,7 +61,7 @@ void loop()
     analogWrite(pinPWM_L, 150);
     analogWrite(pinPWM_R, 150);
     
-    delay(1000);
+    delay(10);
     
     if ( leftSensor && rightSensor && !isEnd ) {
       digitalWrite(pinLdir, HIGH);
